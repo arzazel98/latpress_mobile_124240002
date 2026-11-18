@@ -273,17 +273,6 @@ class AppTheme {
 }
 
 extension ThemeHelper on BuildContext {
-  bool get isDarkMode => Theme.of(this).brightness == Brightness.dark;
-  Color get scaffoldBg => isDarkMode ? AppTheme.bgDark : AppTheme.bgLight;
-  Color get surfaceColor => isDarkMode ? AppTheme.surfaceDark : AppTheme.surfaceLight;
-  Color get elevatedColor => isDarkMode ? AppTheme.surfaceElevatedDark : AppTheme.surfaceElevatedLight;
-  Color get borderColor => isDarkMode ? AppTheme.cardBorderDark : AppTheme.cardBorderLight;
-  Color get textColor => isDarkMode ? AppTheme.textWhite : AppTheme.textDark;
-  Color get textMutedColor => isDarkMode ? AppTheme.textMuted : AppTheme.textMutedLight;
-  Color get textDisabledColor => isDarkMode ? AppTheme.textDisabled : AppTheme.textDisabledLight;
-}
-
-extension ThemeHelper on BuildContext {
   bool get isDarkTheme => Theme.of(this).brightness == Brightness.dark;
   Color get scaffoldBg => isDarkTheme ? AppTheme.bgDark : AppTheme.bgLight;
   Color get surfaceColor => isDarkTheme ? AppTheme.surfaceDark : AppTheme.surfaceLight;
