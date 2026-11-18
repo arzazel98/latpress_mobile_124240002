@@ -13,16 +13,16 @@ class FavoriteView extends StatelessWidget {
     final FavoriteController controller = Get.find<FavoriteController>();
 
     return Scaffold(
-      backgroundColor: AppTheme.bgDark,
+      backgroundColor: context.scaffoldBg,
       appBar: AppBar(
-        backgroundColor: AppTheme.bgDark,
+        backgroundColor: context.scaffoldBg,
         elevation: 0,
-        title: const Text(
+        title: Text(
           'Daftar Favorit',
           style: TextStyle(
             fontWeight: FontWeight.w800,
             fontSize: 22,
-            color: Colors.white,
+            color: context.textColor,
             letterSpacing: 0.3,
           ),
         ),
@@ -39,32 +39,32 @@ class FavoriteView extends StatelessWidget {
                     width: 80,
                     height: 80,
                     decoration: BoxDecoration(
-                      color: AppTheme.surfaceDark,
+                      color: context.surfaceColor,
                       shape: BoxShape.circle,
-                      border: Border.all(color: AppTheme.cardBorder),
+                      border: Border.all(color: context.borderColor),
                     ),
-                    child: const Icon(
+                    child: Icon(
                       Icons.favorite_border_rounded,
                       size: 40,
-                      color: AppTheme.textDisabled,
+                      color: context.textDisabledColor,
                     ),
                   ),
                   const SizedBox(height: 18),
-                  const Text(
+                  Text(
                     'Belum Ada Show Favorit',
                     style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
-                      color: Colors.white,
+                      color: context.textColor,
                     ),
                   ),
                   const SizedBox(height: 8),
-                  const Text(
+                  Text(
                     'Tambahkan TV show yang kamu sukai dari halaman Beranda untuk menyimpannya di sini.',
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 13,
-                      color: AppTheme.textMuted,
+                      color: context.textMutedColor,
                       height: 1.5,
                     ),
                   ),
@@ -100,12 +100,14 @@ class FavoriteView extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(10),
         decoration: BoxDecoration(
-          color: AppTheme.surfaceDark,
+          color: context.surfaceColor,
           borderRadius: BorderRadius.circular(14),
-          border: Border.all(color: AppTheme.cardBorder, width: 0.8),
+          border: Border.all(color: context.borderColor, width: 0.8),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withAlpha(51),
+              color: context.isDarkTheme
+                  ? Colors.black.withAlpha(51)
+                  : Colors.black.withAlpha(15),
               blurRadius: 6,
               offset: const Offset(0, 2),
             ),
@@ -124,18 +126,18 @@ class FavoriteView extends StatelessWidget {
                         show.displayImage,
                         fit: BoxFit.cover,
                         errorBuilder: (ctx, err, stack) => Container(
-                          color: AppTheme.surfaceElevated,
-                          child: const Icon(
+                          color: context.elevatedColor,
+                          child: Icon(
                             Icons.movie_outlined,
-                            color: AppTheme.textDisabled,
+                            color: context.textDisabledColor,
                           ),
                         ),
                       )
                     : Container(
-                        color: AppTheme.surfaceElevated,
-                        child: const Icon(
+                        color: context.elevatedColor,
+                        child: Icon(
                           Icons.movie_outlined,
-                          color: AppTheme.textDisabled,
+                          color: context.textDisabledColor,
                         ),
                       ),
               ),
@@ -151,10 +153,10 @@ class FavoriteView extends StatelessWidget {
                     show.name,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
-                      color: Colors.white,
+                      color: context.textColor,
                     ),
                   ),
                   const SizedBox(height: 6),
@@ -181,9 +183,9 @@ class FavoriteView extends StatelessWidget {
                     show.genreText,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 12,
-                      color: AppTheme.textMuted,
+                      color: context.textMutedColor,
                     ),
                   ),
                 ],
@@ -215,20 +217,20 @@ class FavoriteView extends StatelessWidget {
   ) {
     Get.defaultDialog(
       title: 'Hapus Favorit',
-      titleStyle: const TextStyle(
-        color: Colors.white,
+      titleStyle: TextStyle(
+        color: context.textColor,
         fontWeight: FontWeight.bold,
         fontSize: 18,
       ),
       middleText: 'Hapus "${show.name}" dari daftar favorit?',
-      middleTextStyle: const TextStyle(
-        color: AppTheme.textMuted,
+      middleTextStyle: TextStyle(
+        color: context.textMutedColor,
         fontSize: 14,
       ),
-      backgroundColor: AppTheme.surfaceElevated,
+      backgroundColor: context.surfaceColor,
       radius: 14,
       textCancel: 'Batal',
-      cancelTextColor: AppTheme.textMuted,
+      cancelTextColor: context.textMutedColor,
       textConfirm: 'Hapus',
       confirmTextColor: Colors.white,
       buttonColor: AppTheme.primaryRed,

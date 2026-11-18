@@ -27,20 +27,33 @@ class _MainNavViewState extends State<MainNavView> {
     final FavoriteController favoriteController = Get.put(FavoriteController());
 
     return Scaffold(
-      backgroundColor: AppTheme.bgDark,
+      backgroundColor: context.scaffoldBg,
       body: IndexedStack(
         index: _currentIndex,
         children: _pages,
       ),
       bottomNavigationBar: Container(
-        decoration: const BoxDecoration(
-          color: AppTheme.surfaceDark,
+        decoration: BoxDecoration(
+          color: context.surfaceColor,
           border: Border(
-            top: BorderSide(color: AppTheme.cardBorder, width: 0.8),
+            top: BorderSide(color: context.borderColor, width: 0.8),
           ),
+          boxShadow: [
+            BoxShadow(
+              color: context.isDarkTheme
+                  ? Colors.black.withAlpha(50)
+                  : Colors.black.withAlpha(15),
+              blurRadius: 10,
+              offset: const Offset(0, -2),
+            ),
+          ],
         ),
         child: BottomNavigationBar(
+          backgroundColor: context.surfaceColor,
           currentIndex: _currentIndex,
+          selectedItemColor: AppTheme.primaryRed,
+          unselectedItemColor: context.textDisabledColor,
+          elevation: 0,
           onTap: (index) {
             setState(() {
               _currentIndex = index;

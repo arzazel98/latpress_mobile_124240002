@@ -57,8 +57,13 @@ Aplikasi **NontonSkuy!** dirancang dengan estetika modern dark cinema (terinspir
    - Kartu **Kesan** dan **Pesan** selama mengikuti praktikum pemrograman mobile.
    - Tombol **Logout** fungsional dengan dialog konfirmasi yang membersihkan sesi pengguna.
 
-6. **State Management & Poin Tambahan**:
-   - Menggunakan **`GetX`** (`GetxController`, `Obx`, `Get.to`, `Get.offAll`, `Get.snackbar`, `Get.defaultDialog`) untuk pengelolaan state reaktif, routing bersih, dan notifikasi modern.
+6. **Dukungan 2 Mode Tema (Dark & Light Mode)**:
+   - Tersedia tombol cepat matahari/bulan (Sun/Moon toggle) di AppBar Beranda & Login.
+   - Tersedia switch interaktif di Halaman Profil untuk memilih antara **Mode Gelap (Dark Cinema)** dan **Mode Terang (Light Mode)**.
+   - Preferensi tema disimpan secara persisten di `SharedPreferences`.
+
+7. **State Management & Poin Tambahan**:
+   - Menggunakan **`GetX`** (`GetxController`, `Obx`, `Get.to`, `Get.offAll`, `Get.snackbar`, `Get.defaultDialog`, `Get.changeThemeMode`) untuk pengelolaan state reaktif, routing bersih, dan notifikasi modern.
 
 ---
 
@@ -68,7 +73,8 @@ lib/
 ├── controllers/
 │   ├── auth_controller.dart        # Logika login, logout, sesi SharedPreferences
 │   ├── favorite_controller.dart    # State reaktif daftar favorit dengan Hive
-│   └── home_controller.dart        # Fetch API shows, pencarian & filter genre
+│   ├── home_controller.dart        # Fetch API shows, pencarian & filter genre
+│   └── theme_controller.dart       # Pengaturan tema (Dark Mode & Light Mode) persisten
 ├── models/
 │   └── show_model.dart             # Model data TV Show & pembersihan tag HTML
 ├── services/
@@ -76,7 +82,7 @@ lib/
 │   ├── auth_service.dart           # Wrapper SharedPreferences
 │   └── hive_service.dart           # Database lokal Hive untuk favorit
 ├── theme/
-│   └── app_theme.dart              # Desain tema cinema dark mode & palette warna
+│   └── app_theme.dart              # Desain tema Dark Mode & Light Mode
 ├── views/
 │   ├── detail_view.dart            # Halaman detail show (API /shows/{id})
 │   ├── favorite_view.dart          # Halaman daftar favorit (Hive)

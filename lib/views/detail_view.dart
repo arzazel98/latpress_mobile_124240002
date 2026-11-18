@@ -61,7 +61,7 @@ class _DetailViewState extends State<DetailView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppTheme.bgDark,
+      backgroundColor: context.scaffoldBg,
       body: _buildBody(),
     );
   }
@@ -83,27 +83,27 @@ class _DetailViewState extends State<DetailView> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Icon(
+                Icon(
                   Icons.wifi_off_rounded,
                   size: 64,
-                  color: AppTheme.textMuted,
+                  color: context.textMutedColor,
                 ),
                 const SizedBox(height: 16),
-                const Text(
+                Text(
                   'Gagal memuat detail show',
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
-                    color: Colors.white,
+                    color: context.textColor,
                   ),
                 ),
                 const SizedBox(height: 8),
                 Text(
                   _errorMessage!,
                   textAlign: TextAlign.center,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 13,
-                    color: AppTheme.textMuted,
+                    color: context.textMutedColor,
                   ),
                 ),
                 const SizedBox(height: 20),
@@ -115,9 +115,9 @@ class _DetailViewState extends State<DetailView> {
                 const SizedBox(height: 12),
                 TextButton(
                   onPressed: () => Get.back(),
-                  child: const Text(
+                  child: Text(
                     'Kembali',
-                    style: TextStyle(color: Colors.white70),
+                    style: TextStyle(color: context.textColor),
                   ),
                 ),
               ],
@@ -135,7 +135,7 @@ class _DetailViewState extends State<DetailView> {
         SliverAppBar(
           expandedHeight: 380.0,
           pinned: true,
-          backgroundColor: AppTheme.bgDark,
+          backgroundColor: context.scaffoldBg,
           leading: Container(
             margin: const EdgeInsets.all(8),
             decoration: const BoxDecoration(
@@ -158,7 +158,9 @@ class _DetailViewState extends State<DetailView> {
                 ),
                 child: IconButton(
                   icon: Icon(
-                    isFav ? Icons.favorite_rounded : Icons.favorite_border_rounded,
+                    isFav
+                        ? Icons.favorite_rounded
+                        : Icons.favorite_border_rounded,
                     color: isFav ? AppTheme.primaryRed : Colors.white,
                   ),
                   onPressed: () => _favoriteController.toggleFavorite(show),
@@ -176,23 +178,23 @@ class _DetailViewState extends State<DetailView> {
                         show.displayImage,
                         fit: BoxFit.cover,
                         errorBuilder: (ctx, err, stack) => Container(
-                          color: AppTheme.surfaceDark,
-                          child: const Center(
+                          color: context.surfaceColor,
+                          child: Center(
                             child: Icon(
                               Icons.movie_creation_outlined,
                               size: 72,
-                              color: AppTheme.textMuted,
+                              color: context.textMutedColor,
                             ),
                           ),
                         ),
                       )
                     : Container(
-                        color: AppTheme.surfaceDark,
-                        child: const Center(
+                        color: context.surfaceColor,
+                        child: Center(
                           child: Icon(
                             Icons.movie_creation_outlined,
                             size: 72,
-                            color: AppTheme.textMuted,
+                            color: context.textMutedColor,
                           ),
                         ),
                       ),
@@ -204,8 +206,8 @@ class _DetailViewState extends State<DetailView> {
                       gradient: LinearGradient(
                         colors: [
                           Colors.transparent,
-                          AppTheme.bgDark.withAlpha(128),
-                          AppTheme.bgDark,
+                          context.scaffoldBg.withAlpha(128),
+                          context.scaffoldBg,
                         ],
                         begin: Alignment.topCenter,
                         end: Alignment.bottomCenter,
@@ -229,10 +231,10 @@ class _DetailViewState extends State<DetailView> {
                 // Title
                 Text(
                   show.name,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 26,
                     fontWeight: FontWeight.w800,
-                    color: Colors.white,
+                    color: context.textColor,
                     letterSpacing: 0.3,
                   ),
                 ),
@@ -280,16 +282,16 @@ class _DetailViewState extends State<DetailView> {
                     if (show.premieredYear.isNotEmpty) ...[
                       Text(
                         show.premieredYear,
-                        style: const TextStyle(
-                          color: AppTheme.textMuted,
+                        style: TextStyle(
+                          color: context.textMutedColor,
                           fontSize: 13,
                           fontWeight: FontWeight.w500,
                         ),
                       ),
                       const SizedBox(width: 10),
-                      const Text(
+                      Text(
                         '•',
-                        style: TextStyle(color: AppTheme.textDisabled),
+                        style: TextStyle(color: context.textDisabledColor),
                       ),
                       const SizedBox(width: 10),
                     ],
@@ -298,16 +300,16 @@ class _DetailViewState extends State<DetailView> {
                     if (show.runtime != null) ...[
                       Text(
                         '${show.runtime} Menit',
-                        style: const TextStyle(
-                          color: AppTheme.textMuted,
+                        style: TextStyle(
+                          color: context.textMutedColor,
                           fontSize: 13,
                           fontWeight: FontWeight.w500,
                         ),
                       ),
                       const SizedBox(width: 10),
-                      const Text(
+                      Text(
                         '•',
-                        style: TextStyle(color: AppTheme.textDisabled),
+                        style: TextStyle(color: context.textDisabledColor),
                       ),
                       const SizedBox(width: 10),
                     ],
@@ -320,14 +322,14 @@ class _DetailViewState extends State<DetailView> {
                           vertical: 3,
                         ),
                         decoration: BoxDecoration(
-                          color: AppTheme.surfaceElevated,
+                          color: context.elevatedColor,
                           borderRadius: BorderRadius.circular(6),
                         ),
                         child: Text(
                           show.status!,
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 11,
-                            color: Colors.white70,
+                            color: context.textColor.withAlpha(200),
                           ),
                         ),
                       ),
@@ -347,18 +349,18 @@ class _DetailViewState extends State<DetailView> {
                           vertical: 6,
                         ),
                         decoration: BoxDecoration(
-                          color: AppTheme.surfaceElevated,
+                          color: context.surfaceColor,
                           borderRadius: BorderRadius.circular(20),
                           border: Border.all(
-                            color: AppTheme.cardBorder,
+                            color: context.borderColor,
                             width: 1,
                           ),
                         ),
                         child: Text(
                           genre,
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 12,
-                            color: Colors.white,
+                            color: context.textColor,
                             fontWeight: FontWeight.w500,
                           ),
                         ),
@@ -378,8 +380,8 @@ class _DetailViewState extends State<DetailView> {
                             'Streaming Series',
                             'Memulai pemutaran episode untuk "${show.name}"...',
                             snackPosition: SnackPosition.BOTTOM,
-                            backgroundColor: AppTheme.surfaceDark,
-                            colorText: Colors.white,
+                            backgroundColor: context.surfaceColor,
+                            colorText: context.textColor,
                             icon: const Icon(
                               Icons.play_circle_fill_rounded,
                               color: AppTheme.primaryRed,
@@ -409,15 +411,17 @@ class _DetailViewState extends State<DetailView> {
                     Obx(() {
                       final isFav = _favoriteController.isFavorite(show.id);
                       return OutlinedButton.icon(
-                        onPressed: () => _favoriteController.toggleFavorite(show),
+                        onPressed: () =>
+                            _favoriteController.toggleFavorite(show),
                         icon: Icon(
                           isFav ? Icons.favorite : Icons.favorite_border,
-                          color: isFav ? AppTheme.primaryRed : Colors.white,
+                          color: isFav ? AppTheme.primaryRed : context.textColor,
                         ),
                         label: Text(
                           isFav ? 'Favorit' : 'Tambah',
                           style: TextStyle(
-                            color: isFav ? AppTheme.primaryRed : Colors.white,
+                            color:
+                                isFav ? AppTheme.primaryRed : context.textColor,
                           ),
                         ),
                         style: OutlinedButton.styleFrom(
@@ -426,12 +430,14 @@ class _DetailViewState extends State<DetailView> {
                             horizontal: 16,
                           ),
                           side: BorderSide(
-                            color: isFav ? AppTheme.primaryRed : AppTheme.cardBorder,
+                            color: isFav
+                                ? AppTheme.primaryRed
+                                : context.borderColor,
                           ),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12),
                           ),
-                          backgroundColor: AppTheme.surfaceDark,
+                          backgroundColor: context.surfaceColor,
                         ),
                       );
                     }),
@@ -440,12 +446,12 @@ class _DetailViewState extends State<DetailView> {
                 const SizedBox(height: 24),
 
                 // Overview Header
-                const Text(
+                Text(
                   'Overview',
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
-                    color: Colors.white,
+                    color: context.textColor,
                     letterSpacing: 0.2,
                   ),
                 ),
@@ -454,10 +460,12 @@ class _DetailViewState extends State<DetailView> {
                 // Overview Content
                 Text(
                   show.cleanSummary,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 14,
                     height: 1.6,
-                    color: Color(0xFFC7C7D4),
+                    color: context.isDarkTheme
+                        ? const Color(0xFFC7C7D4)
+                        : const Color(0xFF4A4D62),
                   ),
                 ),
                 const SizedBox(height: 28),
@@ -466,23 +474,27 @@ class _DetailViewState extends State<DetailView> {
                 Container(
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
-                    color: AppTheme.surfaceDark,
+                    color: context.surfaceColor,
                     borderRadius: BorderRadius.circular(14),
-                    border: Border.all(color: AppTheme.cardBorder),
+                    border: Border.all(color: context.borderColor),
                   ),
                   child: Column(
                     children: [
-                      _buildInfoRow('Bahasa', show.language ?? 'English'),
-                      const Divider(color: AppTheme.cardBorder, height: 18),
-                      _buildInfoRow('Status Penayangan', show.status ?? '-'),
-                      const Divider(color: AppTheme.cardBorder, height: 18),
                       _buildInfoRow(
+                          context, 'Bahasa', show.language ?? 'English'),
+                      Divider(color: context.borderColor, height: 18),
+                      _buildInfoRow(
+                          context, 'Status Penayangan', show.status ?? '-'),
+                      Divider(color: context.borderColor, height: 18),
+                      _buildInfoRow(
+                        context,
                         'Rilis Perdana',
                         show.premiered ?? '-',
                       ),
                       if (show.officialSite != null) ...[
-                        const Divider(color: AppTheme.cardBorder, height: 18),
-                        _buildInfoRow('Situs Resmi', show.officialSite!),
+                        Divider(color: context.borderColor, height: 18),
+                        _buildInfoRow(
+                            context, 'Situs Resmi', show.officialSite!),
                       ],
                     ],
                   ),
@@ -496,14 +508,14 @@ class _DetailViewState extends State<DetailView> {
     );
   }
 
-  Widget _buildInfoRow(String label, String value) {
+  Widget _buildInfoRow(BuildContext context, String label, String value) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(
           label,
-          style: const TextStyle(
-            color: AppTheme.textMuted,
+          style: TextStyle(
+            color: context.textMutedColor,
             fontSize: 13,
           ),
         ),
@@ -512,8 +524,8 @@ class _DetailViewState extends State<DetailView> {
           child: Text(
             value,
             textAlign: TextAlign.end,
-            style: const TextStyle(
-              color: Colors.white,
+            style: TextStyle(
+              color: context.textColor,
               fontWeight: FontWeight.w600,
               fontSize: 13,
             ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'controllers/theme_controller.dart';
 import 'services/auth_service.dart';
 import 'services/hive_service.dart';
 import 'theme/app_theme.dart';
@@ -13,6 +14,10 @@ Future<void> main() async {
   await HiveService.init();
   await AuthService.init();
 
+  // Inisialisasi ThemeController
+  final themeController = Get.put(ThemeController());
+  await themeController.loadThemeFromPrefs();
+
   runApp(const MyApp());
 }
 
@@ -23,12 +28,17 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     // Mengecek apakah user sudah memiliki sesi login aktif
     final bool initialLoggedIn = AuthService.isLoggedIn;
+    final ThemeController themeController = Get.find<ThemeController>();
 
-    return GetMaterialApp(
-      title: 'NontonSkuy - TV Series',
-      debugShowCheckedModeBanner: false,
-      theme: AppTheme.darkTheme,
-      home: initialLoggedIn ? const MainNavView() : const LoginView(),
+    return Obx(
+      () => GetMaterialApp(
+        title: 'NontonSkuy - TV Series',
+        debugShowCheckedModeBanner: false,
+        theme: AppTheme.lightTheme,
+        darkTheme: AppTheme.darkTheme,
+        themeMode: themeController.themeMode,
+        home: initialLoggedIn ? const MainNavView() : const LoginView(),
+      ),
     );
   }
 }

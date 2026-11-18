@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../controllers/home_controller.dart';
+import '../controllers/theme_controller.dart';
 import '../models/show_model.dart';
 import '../theme/app_theme.dart';
 import 'detail_view.dart';
@@ -11,11 +12,12 @@ class HomeView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final HomeController controller = Get.put(HomeController());
+    final ThemeController themeController = Get.find<ThemeController>();
 
     return Scaffold(
-      backgroundColor: AppTheme.bgDark,
+      backgroundColor: context.scaffoldBg,
       appBar: AppBar(
-        backgroundColor: AppTheme.bgDark,
+        backgroundColor: context.scaffoldBg,
         elevation: 0,
         title: Row(
           children: [
@@ -32,35 +34,55 @@ class HomeView extends StatelessWidget {
               ),
             ),
             const SizedBox(width: 10),
-            const Text(
+            Text(
               'Skuy Nonton!',
               style: TextStyle(
                 fontWeight: FontWeight.w800,
                 fontSize: 22,
-                color: Colors.white,
+                color: context.textColor,
                 letterSpacing: 0.3,
               ),
             ),
           ],
         ),
+        actions: [
+          // Theme Toggle Button (Light/Dark Mode)
+          Obx(() {
+            final isDark = themeController.isDarkMode.value;
+            return IconButton(
+              tooltip:
+                  isDark ? 'Ganti ke Mode Terang' : 'Ganti ke Mode Gelap',
+              icon: Icon(
+                isDark ? Icons.light_mode_rounded : Icons.dark_mode_rounded,
+                color: isDark ? AppTheme.ratingGold : AppTheme.primaryRed,
+              ),
+              onPressed: () => themeController.toggleTheme(),
+            );
+          }),
+          const SizedBox(width: 8),
+        ],
       ),
       body: RefreshIndicator(
         color: AppTheme.primaryRed,
-        backgroundColor: AppTheme.surfaceDark,
+        backgroundColor: context.surfaceColor,
         onRefresh: () => controller.fetchShows(),
         child: Obx(() {
           if (controller.isLoading.value) {
-            return const Center(
+            return Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  CircularProgressIndicator(
-                    valueColor: AlwaysStoppedAnimation<Color>(AppTheme.primaryRed),
+                  const CircularProgressIndicator(
+                    valueColor:
+                        AlwaysStoppedAnimation<Color>(AppTheme.primaryRed),
                   ),
-                  SizedBox(height: 16),
+                  const SizedBox(height: 16),
                   Text(
                     'Memuat TV Shows...',
-                    style: TextStyle(color: AppTheme.textMuted, fontSize: 14),
+                    style: TextStyle(
+                      color: context.textMutedColor,
+                      fontSize: 14,
+                    ),
                   ),
                 ],
               ),
@@ -80,21 +102,21 @@ class HomeView extends StatelessWidget {
                       color: AppTheme.primaryRed,
                     ),
                     const SizedBox(height: 16),
-                    const Text(
+                    Text(
                       'Oops, terjadi kendala koneksi',
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
-                        color: Colors.white,
+                        color: context.textColor,
                       ),
                     ),
                     const SizedBox(height: 8),
                     Text(
                       controller.errorMessage.value,
                       textAlign: TextAlign.center,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 13,
-                        color: AppTheme.textMuted,
+                        color: context.textMutedColor,
                       ),
                     ),
                     const SizedBox(height: 20),
@@ -121,12 +143,15 @@ class HomeView extends StatelessWidget {
                       // Search Input Field
                       TextField(
                         onChanged: controller.onSearchChanged,
-                        style: const TextStyle(color: Colors.white, fontSize: 14),
+                        style: TextStyle(
+                          color: context.textColor,
+                          fontSize: 14,
+                        ),
                         decoration: InputDecoration(
                           hintText: 'Cari judul serial atau genre...',
-                          prefixIcon: const Icon(
+                          prefixIcon: Icon(
                             Icons.search_rounded,
-                            color: AppTheme.textMuted,
+                            color: context.textMutedColor,
                           ),
                           suffixIcon: controller.searchQuery.value.isNotEmpty
                               ? IconButton(
@@ -135,7 +160,7 @@ class HomeView extends StatelessWidget {
                                       controller.onSearchChanged(''),
                                 )
                               : null,
-                          fillColor: AppTheme.surfaceDark,
+                          fillColor: context.surfaceColor,
                           contentPadding: const EdgeInsets.symmetric(
                             horizontal: 16,
                             vertical: 14,
@@ -163,11 +188,11 @@ class HomeView extends StatelessWidget {
                               onSelected: (_) =>
                                   controller.onGenreSelected(genre),
                               selectedColor: AppTheme.primaryRed,
-                              backgroundColor: AppTheme.surfaceDark,
+                              backgroundColor: context.surfaceColor,
                               labelStyle: TextStyle(
                                 color: isSelected
                                     ? Colors.white
-                                    : AppTheme.textMuted,
+                                    : context.textMutedColor,
                                 fontWeight: isSelected
                                     ? FontWeight.bold
                                     : FontWeight.normal,
@@ -178,7 +203,7 @@ class HomeView extends StatelessWidget {
                                 side: BorderSide(
                                   color: isSelected
                                       ? AppTheme.primaryRed
-                                      : AppTheme.cardBorder,
+                                      : context.borderColor,
                                 ),
                               ),
                             );
@@ -208,19 +233,19 @@ class HomeView extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Text(
+                      Text(
                         'Semua Series Populer',
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
-                          color: Colors.white,
+                          color: context.textColor,
                         ),
                       ),
                       Text(
                         '${controller.filteredShows.length} Shows',
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 12,
-                          color: AppTheme.textMuted,
+                          color: context.textMutedColor,
                         ),
                       ),
                     ],
@@ -230,22 +255,23 @@ class HomeView extends StatelessWidget {
 
               // Empty Search Result
               if (controller.filteredShows.isEmpty)
-                const SliverToBoxAdapter(
+                SliverToBoxAdapter(
                   child: Padding(
-                    padding: EdgeInsets.symmetric(vertical: 48, horizontal: 24),
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 48, horizontal: 24),
                     child: Center(
                       child: Column(
                         children: [
                           Icon(
                             Icons.search_off_rounded,
                             size: 64,
-                            color: AppTheme.textDisabled,
+                            color: context.textDisabledColor,
                           ),
-                          SizedBox(height: 12),
+                          const SizedBox(height: 12),
                           Text(
                             'Tidak ada series yang ditemukan',
                             style: TextStyle(
-                              color: AppTheme.textMuted,
+                              color: context.textMutedColor,
                               fontSize: 15,
                             ),
                           ),
@@ -294,7 +320,7 @@ class HomeView extends StatelessWidget {
         height: 200,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: AppTheme.cardBorder),
+          border: Border.all(color: context.borderColor),
           image: show.displayImage.isNotEmpty
               ? DecorationImage(
                   image: NetworkImage(show.displayImage),
@@ -302,7 +328,7 @@ class HomeView extends StatelessWidget {
                   alignment: Alignment.topCenter,
                 )
               : null,
-          color: AppTheme.surfaceDark,
+          color: context.surfaceColor,
         ),
         child: Stack(
           children: [
@@ -387,7 +413,7 @@ class HomeView extends StatelessWidget {
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: const TextStyle(
-                          color: AppTheme.textMuted,
+                          color: Color(0xFFD4D4E0),
                           fontSize: 12,
                         ),
                       ),
@@ -407,12 +433,14 @@ class HomeView extends StatelessWidget {
       onTap: () => Get.to(() => DetailView(showId: show.id, initialShow: show)),
       child: Container(
         decoration: BoxDecoration(
-          color: AppTheme.surfaceDark,
+          color: context.surfaceColor,
           borderRadius: BorderRadius.circular(14),
-          border: Border.all(color: AppTheme.cardBorder, width: 0.8),
+          border: Border.all(color: context.borderColor, width: 0.8),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withAlpha(77),
+              color: context.isDarkTheme
+                  ? Colors.black.withAlpha(77)
+                  : Colors.black.withAlpha(18),
               blurRadius: 8,
               offset: const Offset(0, 4),
             ),
@@ -433,22 +461,22 @@ class HomeView extends StatelessWidget {
                             show.displayImage,
                             fit: BoxFit.cover,
                             errorBuilder: (ctx, err, stack) => Container(
-                              color: AppTheme.surfaceElevated,
-                              child: const Center(
+                              color: context.elevatedColor,
+                              child: Center(
                                 child: Icon(
                                   Icons.movie_outlined,
-                                  color: AppTheme.textDisabled,
+                                  color: context.textDisabledColor,
                                   size: 36,
                                 ),
                               ),
                             ),
                           )
                         : Container(
-                            color: AppTheme.surfaceElevated,
-                            child: const Center(
+                            color: context.elevatedColor,
+                            child: Center(
                               child: Icon(
                                 Icons.movie_outlined,
-                                color: AppTheme.textDisabled,
+                                color: context.textDisabledColor,
                                 size: 36,
                               ),
                             ),
@@ -506,10 +534,10 @@ class HomeView extends StatelessWidget {
                       show.name,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 13,
                         fontWeight: FontWeight.bold,
-                        color: Colors.white,
+                        color: context.textColor,
                       ),
                     ),
                     const SizedBox(height: 3),
@@ -517,9 +545,9 @@ class HomeView extends StatelessWidget {
                       show.genres.isNotEmpty ? show.genres.first : 'Series',
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 11,
-                        color: AppTheme.textMuted,
+                        color: context.textMutedColor,
                       ),
                     ),
                   ],
